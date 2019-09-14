@@ -1,0 +1,14 @@
+server:
+  port: 7080
+  servlet:
+    context-path: "/"
+spring:
+  profiles:
+    active: DEV
+  datasource:
+      driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      url: jdbc:sqlserver://${booking.db.ip:localhost};port=${booking.db.port:1433};databaseName=${booking.db.schema:bookingDB}
+      username: ${booking.db.user:sa}
+      password: ${booking.db.pwd:14042002@lc}
+settings:
+  timezone: "America/Sao_Paulo"
