@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: aws_localstack
+    environment:
+      - SERVICES=dynamodb
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+    volumes:
+      - './.localstack:/tmp/localstack'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: 'BOOKING'
+      MYSQL_USER: 'luciano'
+      MYSQL_PASSWORD: 'teste123'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./src/main/resources/scripst-sql/CREATE_DATABASE.sql:/var/lib/mysql/booking/scripts/01-CREATE_DATABASE.sql
+      - ./src/main/resources/scripst-sql/domain/INSERT_USERS_AND_RESOURCES.sql:/var/lib/mysql/booking/scripts/02-INSERT_USERS_AND_RESOURCES.sql
