@@ -6,8 +6,8 @@ public class Booking {
     private int id;
     private Resource resource;
     private User user;
-    private LocalDateTime begin;
-    private LocalDateTime end;
+    private LocalDateTime begining;
+    private LocalDateTime ending;
 
 
 
@@ -35,34 +35,55 @@ public class Booking {
         this.user = user;
     }
 
-    public LocalDateTime getBegin() {
-        return begin;
+    public LocalDateTime getBeginning() {
+        return begining;
     }
 
-    public void setBegin(LocalDateTime begin) {
-        this.begin = begin;
+    public void setBegining(LocalDateTime begining) {
+        this.begining = begining;
     }
 
-    public LocalDateTime getEnd() {
-        return end;
+    public LocalDateTime getEnding() {
+        return ending;
     }
 
-    public void setEnd(LocalDateTime end) {
-        this.end = end;
+    public void setEnding(LocalDateTime ending) {
+        this.ending = ending;
     }
 
-    public Booking(int id, Resource resource, User user, LocalDateTime begin, LocalDateTime end) {
+    public Booking(int id, Resource resource, User user, LocalDateTime begining, LocalDateTime ending) {
         this.id = id;
         this.resource = resource;
         this.user = user;
-        this.begin = begin;
-        this.end = end;
+        this.begining = begining;
+        this.ending = ending;
     }
 
-    public Booking(Resource resource, User user, LocalDateTime begin, LocalDateTime end) {
+    public Booking(Resource resource, User user, LocalDateTime begining, LocalDateTime ending) {
         this.resource = resource;
         this.user = user;
-        this.begin = begin;
-        this.end = end;
+        this.begining = begining;
+        this.ending = ending;
+    }
+
+    public boolean isInvalidRange() {
+        return !this.getBeginning().isBefore(this.getEnding());
+    }
+
+    public boolean isRequestEndingCrashingInMidleOfExisting(Booking existingBooking) {
+        return this.getEnding().isAfter(existingBooking.getBeginning()) && !this.getEnding().isAfter(existingBooking.getEnding());
+    }
+
+
+    public boolean isRequestBeginningCrashingInMidleOfExisting(Booking existingBooking) {
+        return this.getBeginning().isAfter(existingBooking.getBeginning()) && !this.getBeginning().isAfter(existingBooking.getEnding());
+    }
+
+    public boolean isRequestInSameRangeOfExistingBooking(Booking booking) {
+        return !this.getBeginning().isBefore(booking.getBeginning()) && !this.getEnding().isAfter(booking.getEnding());
+    }
+
+    public boolean requestRangeContainsExistingBookingRange(Booking booking) {
+        return this.getBeginning().isBefore(booking.getBeginning()) && this.getEnding().isAfter(booking.getEnding());
     }
 }
